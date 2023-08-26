@@ -82,7 +82,6 @@ int main(int argc, char* argv[])
   ENGINE_RUNNING = initialize_window();
 
   // Main engine loop
-
   setup();
 
   while (ENGINE_RUNNING) {

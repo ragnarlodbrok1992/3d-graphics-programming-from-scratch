@@ -1,14 +1,21 @@
 #ifndef _H_DISPLAY
 #define _H_DISPLAY
 
+#define SDL_MAIN_HANDLED
+
+#include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <SDL.h>
 
-SDL_Window*   WINDOW;
-SDL_Renderer* RENDERER;
-int           WINDOW_WIDTH;
-int           WINDOW_HEIGHT;
+#define set_pixel(a, b) COLOR_BUFFER[(WINDOW_WIDTH * b) + a]
+
+extern SDL_Window*   WINDOW;
+extern SDL_Renderer* RENDERER;
+extern int           WINDOW_WIDTH;
+extern int           WINDOW_HEIGHT;
+extern uint32_t*     COLOR_BUFFER; 
+extern SDL_Texture*  COLOR_BUFFER_TEXTURE;
 
 bool initialize_window(void);
 void render_grid(void);

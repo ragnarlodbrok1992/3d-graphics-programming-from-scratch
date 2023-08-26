@@ -1,5 +1,8 @@
 #include "display.h"
 
+int WINDOW_WIDTH  = -1; // If it stays -1 - it's an error
+int WINDOW_HEIGHT = -1;
+
 bool initialize_window(void) {
   if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
     fprintf(stderr, "Error initializing SDL.\n");

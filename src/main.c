@@ -1,21 +1,12 @@
 // This has to be in Windows code for SDL
 // TODO check this on Linux
-#define SDL_MAIN_HANDLED
-
-// Local macros
-#define set_pixel(a, b) COLOR_BUFFER[(WINDOW_WIDTH * b) + a]
-
-#include <stdio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <SDL.h>
 
 #include "display.h"
 
+SDL_Window*   WINDOW = NULL;
+SDL_Renderer* RENDERER = NULL;
+
 // Forward declarations
-void render_grid(void);
-void render_checkboard_pattern(void);
-void render_rectangle(int top_left_row, int top_left_col, int size_row, int size_col, uint32_t color);
 
 // Engine variables
 const char*   TITLE          = "3D Graphics Programming From Scratch.";

@@ -9,3 +9,6 @@
 # My scripts
 vcvars.bat
 
+# RemedyBG stuff
+*.rdbg
+

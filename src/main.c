@@ -217,6 +217,8 @@ void render_checkboard_pattern(void) {
 
 // Exercise 3 - draw rectangle
 void render_rectangle(int top_left_row, int top_left_col, int size_row, int size_col, uint32_t color) {
+  // This might not be necessary since we wont go into a loop if those are not correct
+  // think about it
   if (size_row <= 0) return;
   if (size_col <= 0) return;
   if ((top_left_row <= 0) || (top_left_row > WINDOW_HEIGHT)) return;

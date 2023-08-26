@@ -9,6 +9,7 @@ win_all: src/main.c
 		/EHsc \
 		/I$(SDL2INC) \
 		/Fe3drenderer.exe \
+		src/display.c \
 		src/main.c \
 		shell32.lib \
 		User32.lib \

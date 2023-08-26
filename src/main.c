@@ -3,7 +3,7 @@
 
 #include "display.h"
 
-SDL_Window*   WINDOW = NULL;
+SDL_Window*   WINDOW   = NULL;
 SDL_Renderer* RENDERER = NULL;
 
 // Forward declarations

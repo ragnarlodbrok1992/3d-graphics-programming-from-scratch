@@ -131,6 +131,12 @@ void render_color_buffer(void) {
   SDL_RenderCopy(RENDERER, COLOR_BUFFER_TEXTURE, NULL, NULL);
 }
 
+void draw_pixel(int x, int y, uint32_t color) {
+  if (x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
+    set_pixel(x, y) = color;
+  }
+}
+
 void clear_color_buffer(uint32_t color) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {

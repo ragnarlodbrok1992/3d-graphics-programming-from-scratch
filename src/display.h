@@ -22,6 +22,7 @@ void render_grid(void);
 void render_checkboard_pattern(void);
 void render_rectangle(int top_left_row, int top_left_col, int size_row, int size_col, uint32_t color);
 void render_color_buffer(void);
+void draw_pixel(int x, int y, uint32_t color);
 void clear_color_buffer(uint32_t color);
 void teardown(void);
 

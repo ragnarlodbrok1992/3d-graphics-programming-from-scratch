@@ -10,6 +10,10 @@ SDL_Renderer* RENDERER = NULL;
 const char*   TITLE          = "3D Graphics Programming From Scratch.";
 bool          ENGINE_RUNNING = false;
 
+// Static values
+#define N_POINTS (9 * 9 * 9)
+vec3_t CUBE_POINTS[N_POINTS]; // from -1 to 1 (9x9x9) cube
+
 // Global buffers
 uint32_t* COLOR_BUFFER            = NULL; 
 SDL_Texture* COLOR_BUFFER_TEXTURE = NULL;
@@ -31,6 +35,17 @@ void setup(void) {
   // This array is row first
   // pixel format = A R G B
   // COLOR_BUFFER[(WINDOW_WIDTH * 10) + 20] = 0xFF0000FF;
+
+  // Setting up cube of points
+  int point_select = 0;
+  for (float x = -1; x <= 1; x += 0.25) {
+    for (float y = -1; y <= 1; y += 0.25) {
+      for (float  z = -1; z <= 1; z += 0.25) {
+        vec3_t new_point = { .x = x, .y = y, .z = z };
+        CUBE_POINTS[point_select++] = new_point;
+      }
+    }
+  }
 }
 
 void process_input(void) {
@@ -55,12 +70,12 @@ void render(void) {
   SDL_SetRenderDrawColor(RENDERER, 0xff, 0x00, 0x00, 0xff);
   SDL_RenderClear(RENDERER);
 
-  clear_color_buffer(0xFFFFFF00);
+  clear_color_buffer(0xFF000000);
 
   // Update color buffer
   // render_grid();
-  render_checkboard_pattern();
-  render_rectangle(200, 200, 100, 100, 0xFF00FF00);
+  // render_checkboard_pattern();
+  // render_rectangle(200, 200, 100, 100, 0xFF00FF00);
 
   // Final render of the collor buffer
   render_color_buffer();
@@ -82,8 +97,8 @@ int main(int argc, char* argv[])
   // Main engine loop
   setup();
 
-  vec2_t vector_hector = {1.0, 2.0};
-  (void) vector_hector;
+  // vec2_t vector_hector = {1.0, 2.0};
+  // (void) vector_hector;
 
   while (ENGINE_RUNNING) {
     process_input();

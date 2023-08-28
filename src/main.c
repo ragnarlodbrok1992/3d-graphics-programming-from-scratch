@@ -1,7 +1,5 @@
-// This has to be in Windows code for SDL
-// TODO check this on Linux
-
 #include "display.h"
+#include "vector.h"
 
 SDL_Window*   WINDOW   = NULL;
 SDL_Renderer* RENDERER = NULL;
@@ -83,6 +81,9 @@ int main(int argc, char* argv[])
 
   // Main engine loop
   setup();
+
+  vec2_t vector_hector = {1.0, 2.0};
+  (void) vector_hector;
 
   while (ENGINE_RUNNING) {
     process_input();

@@ -12,3 +12,6 @@ vcvars.bat
 # RemedyBG stuff
 *.rdbg
 
+# CTags
+tags
+

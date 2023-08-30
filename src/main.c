@@ -14,10 +14,12 @@ bool          ENGINE_RUNNING = false;
 // Static values
 #define N_POINTS (9 * 9 * 9)
 vec3_t CUBE_POINTS[N_POINTS]; // from -1 to 1 (9x9x9) cube
-vec2_t PROJECTED_POINTS[N_POINTS];                              
+vec2_t PROJECTED_POINTS[N_POINTS];
+
+vec3_t CAMERA_POSITION = { .x = 0.0f, .y = 0.0f, .z = -5.0f};
 
 // Projection variables
-float FOV_FACTOR = 128;
+float FOV_FACTOR = 640;
 
 // Global buffers
 uint32_t* COLOR_BUFFER            = NULL; 
@@ -71,8 +73,8 @@ void process_input(void) {
 vec2_t project(vec3_t point) {
   // Ortographic projection
   vec2_t projected_point = {
-    .x = (FOV_FACTOR * point.x),
-    .y = (FOV_FACTOR * point.y)
+    .x = (FOV_FACTOR * point.x) / point.z,
+    .y = (FOV_FACTOR * point.y) / point.z
   };
 
   return projected_point;
@@ -81,6 +83,9 @@ vec2_t project(vec3_t point) {
 void update(void) {
   for (int i = 0; i < N_POINTS; i++) {
     vec3_t point = CUBE_POINTS[i];
+
+    // Move the points away from the camera
+    point.z -= CAMERA_POSITION.z;
 
     // Project the current point
     vec2_t projected_point = project(point);

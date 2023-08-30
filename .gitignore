@@ -15,3 +15,6 @@ vcvars.bat
 # CTags
 tags
 
+# Linux binary
+3drenderer
+

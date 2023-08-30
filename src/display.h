@@ -6,7 +6,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include <SDL.h>
+
+#ifdef _WIN32
+  #include <SDL.h>
+#endif
+
+#ifdef  __linux__
+  #include <SDL2/SDL.h>
+#endif
+
 
 #define set_pixel(a, b) COLOR_BUFFER[(WINDOW_WIDTH * b) + a]
 

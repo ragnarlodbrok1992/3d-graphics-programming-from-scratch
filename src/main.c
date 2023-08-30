@@ -1,5 +1,6 @@
 #include "display.h"
 #include "vector.h"
+#include "utility.h"
 
 SDL_Window*   WINDOW   = NULL;
 SDL_Renderer* RENDERER = NULL;
@@ -13,6 +14,10 @@ bool          ENGINE_RUNNING = false;
 // Static values
 #define N_POINTS (9 * 9 * 9)
 vec3_t CUBE_POINTS[N_POINTS]; // from -1 to 1 (9x9x9) cube
+vec2_t PROJECTED_POINTS[N_POINTS];                              
+
+// Projection variables
+float FOV_FACTOR = 128;
 
 // Global buffers
 uint32_t* COLOR_BUFFER            = NULL; 
@@ -62,23 +67,47 @@ void process_input(void) {
   }
 }
 
+// Function receiving 3D vector and returns projected 2D point
+vec2_t project(vec3_t point) {
+  // Ortographic projection
+  vec2_t projected_point = {
+    .x = (FOV_FACTOR * point.x),
+    .y = (FOV_FACTOR * point.y)
+  };
+
+  return projected_point;
+}
+
 void update(void) {
-  // TODO:
+  for (int i = 0; i < N_POINTS; i++) {
+    vec3_t point = CUBE_POINTS[i];
+
+    // Project the current point
+    vec2_t projected_point = project(point);
+
+    PROJECTED_POINTS[i] = projected_point;
+  }
 }
 
 void render(void) {
-  SDL_SetRenderDrawColor(RENDERER, 0xff, 0x00, 0x00, 0xff);
-  SDL_RenderClear(RENDERER);
+  // Loop all projected points and render them
+  for (int i = 0; i < N_POINTS; i++) {
+    vec2_t projected_point = PROJECTED_POINTS[i];
 
-  clear_color_buffer(0xFF000000);
+    // print_vec2(projected_point);
 
-  // Update color buffer
-  // render_grid();
-  // render_checkboard_pattern();
-  // render_rectangle(200, 200, 100, 100, 0xFF00FF00);
+    render_rectangle(
+        (int) projected_point.x + (WINDOW_WIDTH  / 2),
+        (int) projected_point.y + (WINDOW_HEIGHT / 2),
+        4,
+        4,
+        0xFFFFFF00
+        );
+  }
 
   // Final render of the collor buffer
   render_color_buffer();
+  clear_color_buffer(0xFF000000);
 
   // Last render call
   SDL_RenderPresent(RENDERER);
@@ -106,10 +135,9 @@ int main(int argc, char* argv[])
     render();
   }
 
-  // Last message - so everything went well
-
   teardown();
 
+  // Last message - so everything went well
   printf("Goodbye.\n");
   return 0;
 }

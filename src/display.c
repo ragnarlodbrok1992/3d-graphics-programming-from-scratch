@@ -116,7 +116,8 @@ void render_rectangle(int top_left_row, int top_left_col, int size_row, int size
 
   for (int y = top_left_col; y < top_left_col + size_col; y++) {
     for (int x = top_left_row; x < top_left_row + size_row; x++) {
-      set_pixel(x, y) = color;
+      // set_pixel(x, y) = color;
+      draw_pixel(x, y, color);
     }
   }
 }
@@ -132,7 +133,7 @@ void render_color_buffer(void) {
 }
 
 void draw_pixel(int x, int y, uint32_t color) {
-  if (x < WINDOW_WIDTH && y < WINDOW_HEIGHT) {
+  if (x >= 0 && x < WINDOW_WIDTH && y >= 0 && y < WINDOW_HEIGHT) {
     set_pixel(x, y) = color;
   }
 }

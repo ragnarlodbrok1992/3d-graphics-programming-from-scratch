@@ -10,6 +10,7 @@ win_all: src/main.c
 		/I$(SDL2INC) \
 		/Fe3drenderer.exe \
 		src/display.c \
+		src/vector.c \
 		src/main.c \
 		shell32.lib \
 		User32.lib \

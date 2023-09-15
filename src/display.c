@@ -11,6 +11,9 @@ vec3_t CUBE_ROTATION = {.x = 0.0f, .y = 0.0f, .z = 0.0f};
 // Projection variables
 float FOV_FACTOR = 640;
 
+// Engine variables
+int PREVIOUS_FRAME_TIME = 0;
+
 int WINDOW_WIDTH  = -1; // If it stays -1 - it's an error
 int WINDOW_HEIGHT = -1;
 
@@ -200,8 +203,18 @@ void setup(void) {
 }
 
 void update(void) {
+  // // Naive loop
+  // while (!SDL_TICKS_PASSED(SDL_GetTicks(), PREVIOUS_FRAME_TIME + FRAME_TARGET_TIME));
 
+  // Calculating time to wait
+  int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - PREVIOUS_FRAME_TIME);
 
+  // Only delay execution if we are running too fast
+  if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) {
+    SDL_Delay(time_to_wait);
+  }
+  
+  PREVIOUS_FRAME_TIME = SDL_GetTicks();
 
   CUBE_ROTATION.x += 0.01f;
   CUBE_ROTATION.y += 0.01f;

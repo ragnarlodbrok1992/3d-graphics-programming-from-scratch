@@ -16,7 +16,12 @@
 #endif
 
 
+#include "vector.h"
+
 #define set_pixel(a, b) COLOR_BUFFER[(WINDOW_WIDTH * b) + a]
+
+#define FPS 60
+#define FRAME_TARGET_TIME (1000 / FPS)
 
 extern SDL_Window*   WINDOW;
 extern SDL_Renderer* RENDERER;
@@ -33,6 +38,12 @@ void render_color_buffer(void);
 void draw_pixel(int x, int y, uint32_t color);
 void clear_color_buffer(uint32_t color);
 void teardown(void);
+
+void setup(void);
+void update(void);
+void render(void);
+
+vec2_t project(vec3_t point);
 
 #endif /* _H_DISPLAY */
 

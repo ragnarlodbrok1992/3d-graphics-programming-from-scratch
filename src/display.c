@@ -150,6 +150,36 @@ void draw_pixel(int x, int y, uint32_t color) {
   }
 }
 
+// Exercise 4 - draw line (Bresenham's line algorithm)
+void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
+  // Bresenham's line algorithm
+  int dx = abs(x1 - x0);
+  int sx = x0 < x1 ? 1 : -1;
+  int dy = -abs(y1 - y0);
+  int sy = y0 < y1 ? 1 : -1;
+  int error = dx + dy;
+
+  while (true) {
+    draw_pixel(x0, y0, color);
+
+    if (x0 == x1 && y0 == y1) break;
+
+    int e2 = 2 * error;
+
+    if (e2 >= dy) {
+      if (x0 == x1) break;
+      error += dy;
+      x0 += sx;
+    }
+
+    if (e2 <= dx) {
+      if (y0 == y1) break;
+      error += dx;
+      y0 += sy;
+    }
+  }
+}
+
 void clear_color_buffer(uint32_t color) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {
@@ -293,6 +323,9 @@ void render(void) {
         0xFFFFFF00);
 
   }
+
+  // TEST - render line
+  draw_line(100, 100, 200, 200, 0xFF00FF00);
 
   // Final render of the collor buffer
   render_color_buffer();

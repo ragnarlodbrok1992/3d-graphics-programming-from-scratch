@@ -12,6 +12,8 @@ win_all: src/main.c
 		src/display.c \
 		src/vector.c \
 		src/main.c \
+		src/mesh.c \
+		src/triangle.c \
 		shell32.lib \
 		User32.lib \
 		/link /LIBPATH:"$(SDL2LIB)" \

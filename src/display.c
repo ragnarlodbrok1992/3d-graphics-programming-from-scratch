@@ -180,6 +180,13 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
   }
 }
 
+// Draw triangle function using draw_line
+void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t color) {
+  draw_line(x0, y0, x1, y1, color);
+  draw_line(x1, y1, x2, y2, color);
+  draw_line(x2, y2, x0, y0, color);
+}
+
 void clear_color_buffer(uint32_t color) {
   for (int y = 0; y < WINDOW_HEIGHT; y++) {
     for (int x = 0; x < WINDOW_WIDTH; x++) {
@@ -304,6 +311,7 @@ void render(void) {
     // print_vec2(projected_point);
     triangle_t triangle = TRIANGLES_TO_RENDER[i];
 
+    // Draw vertex points
     render_rectangle(triangle.points[0].x,
         triangle.points[0].y,
         3,
@@ -322,10 +330,24 @@ void render(void) {
         3,
         0xFFFFFF00);
 
+    // Draw triangle
+    draw_triangle(triangle.points[0].x,
+        triangle.points[0].y,
+        triangle.points[1].x,
+        triangle.points[1].y,
+        triangle.points[2].x,
+        triangle.points[2].y,
+        0xFF00FF00);
+
   }
 
   // TEST - render line
-  draw_line(100, 100, 200, 200, 0xFF00FF00);
+  /*
+  draw_line(100, 100, 100, 200, 0xFF00FF00);
+  draw_line(100, 200, 200, 200, 0xFF00FF00);
+  draw_line(200, 100, 200, 200, 0xFF00FF00);
+  draw_line(100, 100, 200, 100, 0xFF00FF00);
+  */
 
   // Final render of the collor buffer
   render_color_buffer();

@@ -1,7 +1,9 @@
 #include "display.h"
 #include "mesh.h"
+#include "array.h"
 
-triangle_t TRIANGLES_TO_RENDER[N_MESH_FACES];
+// triangle_t TRIANGLES_TO_RENDER[N_MESH_FACES];
+triangle_t* TRIANGLES_TO_RENDER = NULL;
 
 vec3_t CAMERA_POSITION = { .x = 0.0f, .y = 0.0f, .z = -5.0f};
 vec3_t CUBE_ROTATION = {.x = 0.0f, .y = 0.0f, .z = 0.0f};
@@ -234,6 +236,9 @@ void update(void) {
   // Calculating time to wait
   int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - PREVIOUS_FRAME_TIME);
 
+  // Initialize the array of triangles to render
+  TRIANGLES_TO_RENDER = NULL;
+
   // Only delay execution if we are running too fast
   if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME) {
     SDL_Delay(time_to_wait);
@@ -279,7 +284,8 @@ void update(void) {
     }
 
     // Save the projected triangle in the array of triangles to render
-    TRIANGLES_TO_RENDER[i] = projected_triangle;
+    // TRIANGLES_TO_RENDER[i] = projected_triangle;
+    array_push(TRIANGLES_TO_RENDER, projected_triangle);
 
   }
 
@@ -305,7 +311,11 @@ void update(void) {
 
 void render(void) {
   // Loop all projected triangles and render them
-  for (int i = 0; i < N_MESH_FACES; i++) {
+  // for (int i = 0; i < N_MESH_FACES; i++) {
+
+  int render_size = array_length(TRIANGLES_TO_RENDER);
+
+  for (int i = 0; i < render_size; i++) {
     // vec2_t projected_point = PROJECTED_POINTS[i];
 
     // print_vec2(projected_point);
@@ -340,6 +350,9 @@ void render(void) {
         0xFF00FF00);
 
   }
+
+  // Clear the array of triangles to render every frame loop
+  array_free(TRIANGLES_TO_RENDER);
 
   // TEST - render line
   /*

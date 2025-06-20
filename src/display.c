@@ -2,11 +2,11 @@
 #include "mesh.h"
 #include "array.h"
 
-// triangle_t TRIANGLES_TO_RENDER[N_MESH_FACES];
+// triangle_t TRIANGLES_TO_RENDER[N_CUBE_FACES];
 triangle_t* TRIANGLES_TO_RENDER = NULL;
 
 vec3_t CAMERA_POSITION = { .x = 0.0f, .y = 0.0f, .z = -5.0f};
-vec3_t CUBE_ROTATION = {.x = 0.0f, .y = 0.0f, .z = 0.0f};
+// vec3_t mesh.rotation = {.x = 0.0f, .y = 0.0f, .z = 0.0f};
 
 // Projection variables
 float FOV_FACTOR = 640;
@@ -202,8 +202,10 @@ void teardown(void) {
 
   // Free all required stuff
   free(COLOR_BUFFER);
+  array_free(mesh.vertices);
+  array_free(mesh.faces);
 
-  // Some destroys
+  // Some destroys for SDL
   SDL_DestroyRenderer(RENDERER);
   SDL_DestroyWindow(WINDOW);
   SDL_Quit();
@@ -227,6 +229,8 @@ void setup(void) {
   // pixel format = A R G B
   // COLOR_BUFFER[(WINDOW_WIDTH * 10) + 20] = 0xFF0000FF;
 
+  // Initialize mesh for CUBE
+  load_cube_mesh_data();
 }
 
 void update(void) {
@@ -246,18 +250,19 @@ void update(void) {
   
   PREVIOUS_FRAME_TIME = SDL_GetTicks();
 
-  CUBE_ROTATION.x += 0.01f;
-  CUBE_ROTATION.y += 0.01f;
-  CUBE_ROTATION.z += 0.01f;
+  mesh.rotation.x += 0.01f;
+  mesh.rotation.y += 0.01f;
+  mesh.rotation.z += 0.01f;
 
   // Loop all triangle faces
-  for (int i = 0; i < N_MESH_FACES; i++ ) {
-    face_t mesh_face = mesh_faces[i];
+  int num_faces = array_length(mesh.faces);
+  for (int i = 0; i < num_faces; i++ ) {
+    face_t cube_face = mesh.faces[i];
 
     vec3_t face_vertices[3] = {
-      mesh_vertices[mesh_face.a - 1],
-      mesh_vertices[mesh_face.b - 1],
-      mesh_vertices[mesh_face.c - 1]
+      mesh.vertices[cube_face.a - 1],
+      mesh.vertices[cube_face.b - 1],
+      mesh.vertices[cube_face.c - 1]
     };
 
     triangle_t projected_triangle;
@@ -266,9 +271,9 @@ void update(void) {
     for (int j = 0; j < 3; j++) {
       vec3_t transformed_vertex = face_vertices[j];
 
-      transformed_vertex = vec3_rotate_x(transformed_vertex, CUBE_ROTATION.x);
-      transformed_vertex = vec3_rotate_y(transformed_vertex, CUBE_ROTATION.y);
-      transformed_vertex = vec3_rotate_z(transformed_vertex, CUBE_ROTATION.z);
+      transformed_vertex = vec3_rotate_x(transformed_vertex, mesh.rotation.x);
+      transformed_vertex = vec3_rotate_y(transformed_vertex, mesh.rotation.y);
+      transformed_vertex = vec3_rotate_z(transformed_vertex, mesh.rotation.z);
 
       // Translate the vertex away from the camera
       transformed_vertex.z -= CAMERA_POSITION.z;
@@ -294,9 +299,9 @@ void update(void) {
     vec3_t point = CUBE_POINTS[i];
 
     // Rotate
-    vec3_t transformed_point = vec3_rotate_x(point, CUBE_ROTATION.x);
-           transformed_point = vec3_rotate_y(transformed_point, CUBE_ROTATION.y);
-           transformed_point = vec3_rotate_z(transformed_point, CUBE_ROTATION.z);
+    vec3_t transformed_point = vec3_rotate_x(point, mesh.rotation.x);
+           transformed_point = vec3_rotate_y(transformed_point, mesh.rotation.y);
+           transformed_point = vec3_rotate_z(transformed_point, mesh.rotation.z);
 
     // Translate the points away from the camera
     transformed_point.z -= CAMERA_POSITION.z;
@@ -311,7 +316,7 @@ void update(void) {
 
 void render(void) {
   // Loop all projected triangles and render them
-  // for (int i = 0; i < N_MESH_FACES; i++) {
+  // for (int i = 0; i < N_CUBE_FACES; i++) {
 
   int render_size = array_length(TRIANGLES_TO_RENDER);
 
@@ -322,6 +327,8 @@ void render(void) {
     triangle_t triangle = TRIANGLES_TO_RENDER[i];
 
     // Draw vertex points
+#pragma warning(push)
+#pragma warning(disable : 4244)
     render_rectangle(triangle.points[0].x,
         triangle.points[0].y,
         3,
@@ -348,6 +355,7 @@ void render(void) {
         triangle.points[2].x,
         triangle.points[2].y,
         0xFF00FF00);
+#pragma warning(pop)
 
   }
 

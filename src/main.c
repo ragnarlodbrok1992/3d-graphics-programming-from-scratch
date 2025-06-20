@@ -25,6 +25,7 @@ void process_input(void) {
       break;
     case SDL_KEYDOWN:
       if (event.key.keysym.sym == SDLK_ESCAPE) ENGINE_RUNNING = false;
+      if (event.key.keysym.sym == SDLK_q) ENGINE_RUNNING = false;
       break;
   }
 }

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "obj_loader.h"
 
@@ -41,6 +42,21 @@ void print_help_message() {
 static options_t* main_options;
 static FILE* obj_file;
 
+int string_split(char* string, char* delimeter, char* splitted_elements[]) {
+  // Function returns number of splitted elements (how much is after splitting)
+  // 0 means no splitting has occured
+  // So the function returns 0 or 2 or more
+  (void) splitted_elements;
+
+  size_t string_len = strlen(string);
+  size_t delimeter_len = strlen(delimeter);
+  for (size_t x = 0; x < string_len - delimeter_len; ++x) {
+    printf("x: %zd, string_len: %zd, delimeter_len: %zd\n", x, string_len, delimeter_len);
+  }
+
+  return 0;
+}
+
 int parse_file(char* filename) {
   // Checking file opening
   errno_t obj_file_err = fopen_s(&obj_file, filename, "r");
@@ -58,6 +74,11 @@ int parse_file(char* filename) {
 
   // In this function, we assume bforartists format that has "o" and "mtllib" section
   // and some number of "v" (vertices) and "f" (faces) sections
+
+  // Test string split
+  char** split_buffer = NULL;
+  int splitted_num = string_split("Mama ma kota", " ", split_buffer);
+  printf("splitted_num: %d\n", splitted_num);
 
   // Check for mtllib value
   // Check for o (object) value
@@ -102,6 +123,7 @@ int main(int argc, char* argv[])
   // Check if filename is something that exists
   printf("main_options->input_file_name: %s\n", main_options->input_file_name);
   int parse_file_ret = parse_file(main_options->input_file_name);
+  (void) parse_file_ret;
 
   // Cleanup
   free(main_options);

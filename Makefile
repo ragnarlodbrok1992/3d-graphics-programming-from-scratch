@@ -34,3 +34,5 @@ win_run:
 win_clean:
 	@del *.obj *.exe *.ilk *.pdb *.dll *.lib *~
 
+test: win_tools
+	@render_tools.exe assets\test\cube.obj
